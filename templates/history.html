@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>History | Library Management System</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+
+    <!-- ================= NAVBAR ================= -->
+
+    <nav class="navbar">
+
+        <div class="nav-brand">
+            📚 Library Management System
+        </div>
+
+        <div class="nav-links">
+
+            <a href="/">Dashboard</a>
+
+            <a href="/books">Books</a>
+
+            <a href="/users">Users</a>
+
+            <a href="/history">History</a>
+
+            <a href="/reports">Reports</a>
+
+            <a href="/logout">Logout</a>
+
+        </div>
+
+    </nav>
+
+
+
+    <!-- ================= MAIN CONTENT ================= -->
+
+    <div class="container">
+
+
+        <!-- HEADER -->
+
+        <div class="welcome-card">
+
+            <div>
+
+                <h1>
+                    📋 Transaction History
+                </h1>
+
+                <p>
+                    View all book issue and return transactions.
+                </p>
+
+            </div>
+
+            <div class="role-badge">
+                Admin
+            </div>
+
+        </div>
+
+
+
+        <!-- HISTORY TABLE -->
+
+        <div class="card">
+
+            <h2>
+                📚 Issue & Return Records
+            </h2>
+
+            <div style="overflow-x:auto;">
+
+                <table>
+
+                    <tr>
+
+                        <th>Student</th>
+
+                        <th>Username</th>
+
+                        <th>Book</th>
+
+                        <th>Issue Date</th>
+
+                        <th>Due Date</th>
+
+                        <th>Return Date</th>
+
+                        <th>Fine</th>
+
+                        <th>Status</th>
+
+                    </tr>
+
+
+                    {% for record in history %}
+
+                    <tr>
+
+
+                        <!-- STUDENT -->
+
+                        <td>
+
+                            <strong>
+                                {{ record.name }}
+                            </strong>
+
+                        </td>
+
+
+                        <!-- USERNAME -->
+
+                        <td>
+                            {{ record.username }}
+                        </td>
+
+
+                        <!-- BOOK -->
+
+                        <td>
+                            {{ record.title }}
+                        </td>
+
+
+                        <!-- ISSUE DATE -->
+
+                        <td>
+                            {{ record.issue_date }}
+                        </td>
+
+
+                        <!-- DUE DATE -->
+
+                        <td>
+
+                            {% if record.due_date %}
+
+                            {{ record.due_date }}
+
+                            {% else %}
+
+                            —
+
+                            {% endif %}
+
+                        </td>
+
+
+                        <!-- RETURN DATE -->
+
+                        <td>
+
+                            {% if record.return_date %}
+
+                            {{ record.return_date }}
+
+                            {% else %}
+
+                            —
+
+                            {% endif %}
+
+                        </td>
+
+
+                        <!-- FINE -->
+
+                        <td>
+
+                            ₹{{ record.fine or 0 }}
+
+                        </td>
+
+
+                        <!-- STATUS -->
+
+                        <td>
+
+                            {% if record.status == "Issued" %}
+
+                            <strong style="color: #d97706;">
+
+                                📤 Issued
+
+                            </strong>
+
+
+                            {% elif record.status == "Returned" %}
+
+                            {% if record.fine and record.fine > 0 %}
+
+                            <strong style="color: red;">
+
+                                ⚠️ Returned + Fine
+
+                            </strong>
+
+                            {% else %}
+
+                            <strong style="color: green;">
+
+                                📥 Returned
+
+                            </strong>
+
+                            {% endif %}
+
+
+                            {% else %}
+
+                            {{ record.status }}
+
+                            {% endif %}
+
+                        </td>
+
+
+                    </tr>
+
+
+                    {% else %}
+
+                    <tr>
+
+                        <td colspan="8">
+
+                            📋 No transaction history available.
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </table>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ADMIN OPTIONS -->
+
+        <div class="card">
+
+            <h2>
+                ⚙️ Admin Options
+            </h2>
+
+            <p>
+
+                <a href="/add">
+                    ➕ Add New Book
+                </a>
+
+            </p>
+
+            <p>
+
+                <a href="/users">
+                    👥 Manage Users
+                </a>
+
+            </p>
+
+            <p>
+
+                <a href="/reports">
+                    📊 View Reports
+                </a>
+
+            </p>
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer>
+
+        <p>
+            © 2026 Library Management System
+        </p>
+
+    </footer>
+
+
+</body>
+
+</html>

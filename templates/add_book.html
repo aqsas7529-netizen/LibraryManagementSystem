@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Book - Library Management System</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <div class="card">
+
+            <h1 class="title">📚 Add New Book</h1>
+
+            <p>
+                <a href="/">🏠 Home</a> |
+                <a href="/books">📖 Books</a> |
+                <a href="/logout">🚪 Logout</a>
+            </p>
+
+        </div>
+
+        <div class="card">
+
+            <h2>➕ Book Details</h2>
+
+            <form method="POST">
+
+                <label>Book Title:</label>
+                <input type="text" name="title" required>
+
+                <br><br>
+
+                <label>Author:</label>
+                <input type="text" name="author" required>
+
+                <br><br>
+
+                <label>Category:</label>
+                <input type="text" name="category" required>
+
+                <br><br>
+
+                <label>ISBN:</label>
+                <input type="text" name="isbn">
+
+                <br><br>
+
+                <label>Quantity:</label>
+                <input type="number" name="quantity" min="1" required>
+
+                <br><br>
+
+                <button type="submit">➕ Add Book</button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</body>
+</html>

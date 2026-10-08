@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Users | Library Management System</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+
+<!-- ================= NAVBAR ================= -->
+
+<nav class="navbar">
+
+    <div class="nav-brand">
+        📚 Library Management System
+    </div>
+
+    <div class="nav-links">
+
+        <a href="/">Dashboard</a>
+
+        <a href="/books">Books</a>
+
+        <a href="/users">Users</a>
+
+        <a href="/history">History</a>
+
+        <a href="/reports">Reports</a>
+
+        <a href="/logout">Logout</a>
+
+    </div>
+
+</nav>
+
+
+
+<!-- ================= MAIN CONTENT ================= -->
+
+<div class="container">
+
+
+    <!-- HEADER -->
+
+    <div class="welcome-card">
+
+        <div>
+
+            <h1>
+                👥 Registered Users
+            </h1>
+
+            <p>
+                View all users registered in the library system.
+            </p>
+
+        </div>
+
+        <div class="role-badge">
+            Admin
+        </div>
+
+    </div>
+
+
+
+    <!-- USER TABLE -->
+
+    <div class="card">
+
+        <h2>
+            👤 User Management
+        </h2>
+
+        <div style="overflow-x:auto;">
+
+            <table>
+
+                <tr>
+
+                    <th>ID</th>
+
+                    <th>Name</th>
+
+                    <th>Username</th>
+
+                    <th>Role</th>
+
+                </tr>
+
+
+                {% for user in users %}
+
+                <tr>
+
+                    <td>
+                        {{ user.id }}
+                    </td>
+
+                    <td>
+
+                        <strong>
+                            {{ user.name }}
+                        </strong>
+
+                    </td>
+
+                    <td>
+                        {{ user.username }}
+                    </td>
+
+                    <td>
+
+                        {% if user.role == "admin" %}
+
+                            <strong style="color: #1e3a8a;">
+                                👑 Admin
+                            </strong>
+
+                        {% else %}
+
+                            <strong style="color: #16a34a;">
+                                👤 Student
+                            </strong>
+
+                        {% endif %}
+
+                    </td>
+
+                </tr>
+
+
+                {% else %}
+
+                <tr>
+
+                    <td colspan="4">
+
+                        No users registered.
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ADMIN OPTIONS -->
+
+    <div class="card">
+
+        <h2>
+            ⚙️ Admin Options
+        </h2>
+
+        <p>
+
+            <a href="/add">
+                ➕ Add New Book
+            </a>
+
+        </p>
+
+        <p>
+
+            <a href="/history">
+                📋 View Transaction History
+            </a>
+
+        </p>
+
+        <p>
+
+            <a href="/reports">
+                📊 View Library Reports
+            </a>
+
+        </p>
+
+    </div>
+
+
+</div>
+
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+    <p>
+        © 2026 Library Management System
+    </p>
+
+</footer>
+
+
+</body>
+
+</html>

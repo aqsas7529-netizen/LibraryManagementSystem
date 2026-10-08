@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Dashboard | Library Management System</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+
+    <!-- ================= NAVBAR ================= -->
+
+    <nav class="navbar">
+
+        <div class="nav-brand">
+            📚 Library Management System
+        </div>
+
+        <div class="nav-links">
+
+            <a href="/">Dashboard</a>
+
+            <a href="/books">Books</a>
+
+            {% if session["role"] == "student" %}
+
+            <a href="/my-books">My Books</a>
+
+            {% endif %}
+
+
+            {% if session["role"] == "admin" %}
+
+            <a href="/users">Users</a>
+
+            <a href="/history">History</a>
+
+            <a href="/reports">Reports</a>
+
+            {% endif %}
+
+
+            <a href="/logout">Logout</a>
+
+        </div>
+
+    </nav>
+
+
+
+    <!-- ================= MAIN ================= -->
+
+    <div class="container">
+
+
+        <!-- WELCOME -->
+
+        <div class="welcome-card">
+
+            <div>
+
+                <h1>
+                    Welcome back, {{ session["username"] }} 👋
+                </h1>
+
+                <p>
+
+                    {% if session["role"] == "admin" %}
+
+                    Manage your library efficiently from one dashboard.
+
+                    {% else %}
+
+                    Browse, issue and manage your books easily.
+
+                    {% endif %}
+
+                </p>
+
+            </div>
+
+
+            <div class="role-badge">
+
+                {{ session["role"]|capitalize }}
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ================= STATISTICS ================= -->
+
+        <h2 class="section-title">
+            📊 Library Overview
+        </h2>
+
+
+        <div class="dashboard-cards">
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    📚
+                </div>
+
+                <p>Total Books</p>
+
+                <strong>
+                    {{ total_books }}
+                </strong>
+
+            </div>
+
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    ✅
+                </div>
+
+                <p>Available Books</p>
+
+                <strong>
+                    {{ available_books }}
+                </strong>
+
+            </div>
+
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    📤
+                </div>
+
+                <p>Issued Books</p>
+
+                <strong>
+                    {{ issued_books }}
+                </strong>
+
+            </div>
+
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    👥
+                </div>
+
+                <p>Total Users</p>
+
+                <strong>
+                    {{ total_users }}
+                </strong>
+
+            </div>
+
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    ⚠️
+                </div>
+
+                <p>Overdue Books</p>
+
+                <strong>
+                    {{ overdue_books }}
+                </strong>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ================= QUICK ACTIONS ================= -->
+
+        <h2 class="section-title">
+            ⚡ Quick Actions
+        </h2>
+
+
+        <div class="quick-actions">
+
+
+            <a href="/books" class="action-card">
+
+                <span>📖</span>
+
+                <div>
+
+                    <strong>
+                        Browse Books
+                    </strong>
+
+                    <small>
+                        Search and view library books
+                    </small>
+
+                </div>
+
+            </a>
+
+
+
+            {% if session["role"] == "student" %}
+
+            <a href="/my-books" class="action-card">
+
+                <span>📋</span>
+
+                <div>
+
+                    <strong>
+                        My Books
+                    </strong>
+
+                    <small>
+                        View your issued books
+                    </small>
+
+                </div>
+
+            </a>
+
+            {% endif %}
+
+
+
+            {% if session["role"] == "admin" %}
+
+            <a href="/add" class="action-card">
+
+                <span>➕</span>
+
+                <div>
+
+                    <strong>
+                        Add Book
+                    </strong>
+
+                    <small>
+                        Add a new book
+                    </small>
+
+                </div>
+
+            </a>
+
+
+
+            <a href="/users" class="action-card">
+
+                <span>👥</span>
+
+                <div>
+
+                    <strong>
+                        Manage Users
+                    </strong>
+
+                    <small>
+                        View registered users
+                    </small>
+
+                </div>
+
+            </a>
+
+
+
+            <a href="/history" class="action-card">
+
+                <span>📋</span>
+
+                <div>
+
+                    <strong>
+                        Transaction History
+                    </strong>
+
+                    <small>
+                        View issue and return records
+                    </small>
+
+                </div>
+
+            </a>
+
+
+
+            <a href="/reports" class="action-card">
+
+                <span>📊</span>
+
+                <div>
+
+                    <strong>
+                        Reports
+                    </strong>
+
+                    <small>
+                        View library statistics
+                    </small>
+
+                </div>
+
+            </a>
+
+            {% endif %}
+
+        </div>
+
+
+
+        <!-- ================= RECENT TRANSACTIONS ================= -->
+
+        <h2 class="section-title">
+            🕐 Recent Transactions
+        </h2>
+
+
+        <div class="card">
+
+            <div style="overflow-x:auto;">
+
+                <table>
+
+                    <tr>
+
+                        <th>Student</th>
+
+                        <th>Book</th>
+
+                        <th>Issue Date</th>
+
+                        <th>Return Date</th>
+
+                        <th>Status</th>
+
+                    </tr>
+
+
+                    {% for record in recent_transactions %}
+
+                    <tr>
+
+                        <td>
+                            {{ record.name }}
+                        </td>
+
+                        <td>
+                            {{ record.title }}
+                        </td>
+
+                        <td>
+                            {{ record.issue_date }}
+                        </td>
+
+                        <td>
+
+                            {% if record.return_date %}
+
+                            {{ record.return_date }}
+
+                            {% else %}
+
+                            —
+
+                            {% endif %}
+
+                        </td>
+
+                        <td>
+
+                            {% if record.status == "Issued" %}
+
+                            <strong style="color:#d97706;">
+                                📤 Issued
+                            </strong>
+
+                            {% else %}
+
+                            <strong style="color:#16a34a;">
+                                📥 Returned
+                            </strong>
+
+                            {% endif %}
+
+                        </td>
+
+                    </tr>
+
+
+                    {% else %}
+
+                    <tr>
+
+                        <td colspan="5">
+
+                            📋 No transactions available.
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </table>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ================= RECENT BOOKS ================= -->
+
+        <h2 class="section-title">
+            📚 Recently Added Books
+        </h2>
+
+
+        <div class="card">
+
+            <div style="overflow-x:auto;">
+
+                <table>
+
+                    <tr>
+
+                        <th>Book</th>
+
+                        <th>Author</th>
+
+                        <th>Category</th>
+
+                        <th>Quantity</th>
+
+                        <th>Available</th>
+
+                    </tr>
+
+
+                    {% for book in recent_books %}
+
+                    <tr>
+
+                        <td>
+                            <strong>
+                                {{ book.title }}
+                            </strong>
+                        </td>
+
+                        <td>
+                            {{ book.author }}
+                        </td>
+
+                        <td>
+                            {{ book.category }}
+                        </td>
+
+                        <td>
+                            {{ book.quantity }}
+                        </td>
+
+                        <td>
+
+                            {% if book.available > 0 %}
+
+                            <strong style="color:#16a34a;">
+                                {{ book.available }}
+                            </strong>
+
+                            {% else %}
+
+                            <strong style="color:#dc2626;">
+                                0
+                            </strong>
+
+                            {% endif %}
+
+                        </td>
+
+                    </tr>
+
+
+                    {% else %}
+
+                    <tr>
+
+                        <td colspan="5">
+
+                            📚 No books available.
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </table>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer>
+
+        <p>
+            © 2026 Library Management System
+        </p>
+
+    </footer>
+
+
+</body>
+
+</html>

@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>My Books | Library Management System</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+
+<!-- ================= NAVBAR ================= -->
+
+<nav class="navbar">
+
+    <div class="nav-brand">
+        📚 Library Management System
+    </div>
+
+    <div class="nav-links">
+
+        <a href="/">Dashboard</a>
+
+        <a href="/books">Books</a>
+
+        <a href="/my-books">My Books</a>
+
+        <a href="/logout">Logout</a>
+
+    </div>
+
+</nav>
+
+
+
+<!-- ================= MAIN CONTENT ================= -->
+
+<div class="container">
+
+
+    <!-- HEADER -->
+
+    <div class="welcome-card">
+
+        <div>
+
+            <h1>
+                📚 My Books
+            </h1>
+
+            <p>
+                View your issued and returned books.
+            </p>
+
+        </div>
+
+        <div class="role-badge">
+            Student
+        </div>
+
+    </div>
+
+
+
+    <!-- ================= RECORDS ================= -->
+
+    <div class="card">
+
+        <h2>
+            📋 My Issue & Return History
+        </h2>
+
+        <div style="overflow-x:auto;">
+
+            <table>
+
+                <tr>
+
+                    <th>Book</th>
+
+                    <th>Author</th>
+
+                    <th>Issue Date</th>
+
+                    <th>Due Date</th>
+
+                    <th>Return Date</th>
+
+                    <th>Fine</th>
+
+                    <th>Status</th>
+
+                    <th>Action</th>
+
+                </tr>
+
+
+                {% for book in my_books %}
+
+                <tr>
+
+
+                    <!-- BOOK -->
+
+                    <td>
+
+                        <strong>
+                            {{ book.title }}
+                        </strong>
+
+                    </td>
+
+
+                    <!-- AUTHOR -->
+
+                    <td>
+                        {{ book.author }}
+                    </td>
+
+
+                    <!-- ISSUE DATE -->
+
+                    <td>
+                        {{ book.issue_date }}
+                    </td>
+
+
+                    <!-- DUE DATE -->
+
+                    <td>
+
+                        {% if book.due_date %}
+
+                            {{ book.due_date }}
+
+                        {% else %}
+
+                            —
+
+                        {% endif %}
+
+                    </td>
+
+
+                    <!-- RETURN DATE -->
+
+                    <td>
+
+                        {% if book.return_date %}
+
+                            {{ book.return_date }}
+
+                        {% else %}
+
+                            —
+
+                        {% endif %}
+
+                    </td>
+
+
+                    <!-- FINE -->
+
+                    <td>
+
+                        ₹{{ book.fine or 0 }}
+
+                    </td>
+
+
+                    <!-- STATUS -->
+
+                    <td>
+
+                        {% if book.status == "Issued" %}
+
+                            <strong style="color: #d97706;">
+
+                                📤 Issued
+
+                            </strong>
+
+
+                        {% elif book.status == "Returned" %}
+
+                            {% if book.fine and book.fine > 0 %}
+
+                                <strong style="color: red;">
+
+                                    ⚠️ Returned + Fine
+
+                                </strong>
+
+                            {% else %}
+
+                                <strong style="color: green;">
+
+                                    📥 Returned
+
+                                </strong>
+
+                            {% endif %}
+
+
+                        {% else %}
+
+                            {{ book.status }}
+
+                        {% endif %}
+
+                    </td>
+
+
+                    <!-- ACTION -->
+
+                    <td>
+
+                        {% if book.status == "Issued" %}
+
+                            <a href="/return/{{ book.id }}">
+
+                                📥 Return Book
+
+                            </a>
+
+                        {% else %}
+
+                            <span style="color: #64748b;">
+
+                                No Action
+
+                            </span>
+
+                        {% endif %}
+
+                    </td>
+
+
+                </tr>
+
+
+                {% else %}
+
+                <tr>
+
+                    <td colspan="8">
+
+                        📚 You have not issued any books yet.
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ================= INFORMATION ================= -->
+
+    <div class="info-card">
+
+        <h2>
+            ℹ️ Library Rules
+        </h2>
+
+        <div class="info-grid">
+
+            <div>
+
+                <span>Issue Period</span>
+
+                <strong>
+                    7 Days
+                </strong>
+
+            </div>
+
+
+            <div>
+
+                <span>Late Fine</span>
+
+                <strong>
+                    ₹10 / Day
+                </strong>
+
+            </div>
+
+
+            <div>
+
+                <span>Return</span>
+
+                <strong>
+                    Before Due Date
+                </strong>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+    <p>
+        © 2026 Library Management System
+    </p>
+
+</footer>
+
+
+</body>
+
+</html>

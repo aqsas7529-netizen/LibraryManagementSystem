@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login - Library Management System</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <div class="card">
+
+            <h1 class="title">📚 Library Management System</h1>
+
+            <h2>Login</h2>
+
+            {% if error %}
+            <p class="error">{{ error }}</p>
+            {% endif %}
+
+            <form method="POST">
+
+                <label>Username:</label>
+                <input type="text" name="username" required>
+
+                <br><br>
+
+                <label>Password:</label>
+                <input type="password" name="password" required>
+
+                <br><br>
+
+                <button type="submit">Login</button>
+
+            </form>
+
+            <br>
+
+            <p>
+                Don't have an account?
+                <a href="/register">Register here</a>
+            </p>
+
+        </div>
+
+    </div>
+
+</body>
+</html>

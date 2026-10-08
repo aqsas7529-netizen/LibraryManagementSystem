@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Reports | Library Management System</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+
+    <!-- ================= NAVBAR ================= -->
+
+    <nav class="navbar">
+
+        <div class="nav-brand">
+            📚 Library Management System
+        </div>
+
+        <div class="nav-links">
+
+            <a href="/">Dashboard</a>
+
+            <a href="/books">Books</a>
+
+            <a href="/users">Users</a>
+
+            <a href="/history">History</a>
+
+            <a href="/reports">Reports</a>
+
+            <a href="/logout">Logout</a>
+
+        </div>
+
+    </nav>
+
+
+
+    <!-- ================= MAIN CONTENT ================= -->
+
+    <div class="container">
+
+
+        <!-- HEADER -->
+
+        <div class="welcome-card">
+
+            <div>
+
+                <h1>
+                    📊 Library Reports
+                </h1>
+
+                <p>
+                    View the current library statistics and activity summary.
+                </p>
+
+            </div>
+
+            <div class="role-badge">
+                Admin
+            </div>
+
+        </div>
+
+
+
+        <!-- ================= REPORT CARDS ================= -->
+
+        <h2 class="section-title">
+            📈 Library Summary
+        </h2>
+
+
+        <div class="dashboard-cards">
+
+
+            <!-- TOTAL BOOKS -->
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    📚
+                </div>
+
+                <p>
+                    Total Books
+                </p>
+
+                <strong>
+                    {{ total_books }}
+                </strong>
+
+            </div>
+
+
+
+            <!-- AVAILABLE -->
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    ✅
+                </div>
+
+                <p>
+                    Available Books
+                </p>
+
+                <strong>
+                    {{ available_books }}
+                </strong>
+
+            </div>
+
+
+
+            <!-- ISSUED -->
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    📤
+                </div>
+
+                <p>
+                    Issued Books
+                </p>
+
+                <strong>
+                    {{ issued_books }}
+                </strong>
+
+            </div>
+
+
+
+            <!-- RETURNED -->
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    📥
+                </div>
+
+                <p>
+                    Returned Books
+                </p>
+
+                <strong>
+                    {{ returned_books }}
+                </strong>
+
+            </div>
+
+
+
+            <!-- OVERDUE -->
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    ⚠️
+                </div>
+
+                <p>
+                    Overdue Books
+                </p>
+
+                <strong>
+                    {{ overdue_books }}
+                </strong>
+
+            </div>
+
+
+
+            <!-- FINE -->
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    💰
+                </div>
+
+                <p>
+                    Total Fine
+                </p>
+
+                <strong>
+                    ₹{{ total_fine }}
+                </strong>
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- ================= ADMIN ACTIONS ================= -->
+
+        <h2 class="section-title">
+            ⚡ Admin Actions
+        </h2>
+
+
+        <div class="quick-actions">
+
+
+            <!-- ADD BOOK -->
+
+            <a href="/add" class="action-card">
+
+                <span>
+                    ➕
+                </span>
+
+                <div>
+
+                    <strong>
+                        Add New Book
+                    </strong>
+
+                    <small>
+                        Add a new book to the library
+                    </small>
+
+                </div>
+
+            </a>
+
+
+
+            <!-- USERS -->
+
+            <a href="/users" class="action-card">
+
+                <span>
+                    👥
+                </span>
+
+                <div>
+
+                    <strong>
+                        Manage Users
+                    </strong>
+
+                    <small>
+                        View registered users
+                    </small>
+
+                </div>
+
+            </a>
+
+
+
+            <!-- HISTORY -->
+
+            <a href="/history" class="action-card">
+
+                <span>
+                    📋
+                </span>
+
+                <div>
+
+                    <strong>
+                        Transaction History
+                    </strong>
+
+                    <small>
+                        View issue and return records
+                    </small>
+
+                </div>
+
+            </a>
+
+
+
+            <!-- BOOKS -->
+
+            <a href="/books" class="action-card">
+
+                <span>
+                    📖
+                </span>
+
+                <div>
+
+                    <strong>
+                        Manage Books
+                    </strong>
+
+                    <small>
+                        View and manage library books
+                    </small>
+
+                </div>
+
+            </a>
+
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer>
+
+        <p>
+            © 2026 Library Management System
+        </p>
+
+    </footer>
+
+
+</body>
+
+</html>
