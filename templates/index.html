@@ -1,540 +1,306 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard | Library Management System</title>
-
-    <link rel="stylesheet"
-          href="{{ url_for('static', filename='style.css') }}">
-
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-
 <body>
 
-
-    <!-- ================= NAVBAR ================= -->
-
     <nav class="navbar">
-
-        <div class="nav-brand">
-            📚 Library Management System
-        </div>
+        <div class="nav-brand">📚 Library Management System</div>
 
         <div class="nav-links">
-
             <a href="/">Dashboard</a>
-
             <a href="/books">Books</a>
 
             {% if session["role"] == "student" %}
-
             <a href="/my-books">My Books</a>
-
             {% endif %}
 
+            {% if session["role"] == "librarian" %}
+            <a href="/history">Issue/Return History</a>
+            <a href="/overdue">Overdue Books</a>
+            {% endif %}
 
             {% if session["role"] == "admin" %}
-
-            <a href="/users">Users</a>
-
+            <a href="/users">Manage Users</a>
             <a href="/history">History</a>
-
+            <a href="/overdue">Overdue Books</a>
             <a href="/reports">Reports</a>
-
             {% endif %}
 
-
             <a href="/logout">Logout</a>
-
         </div>
-
     </nav>
-
-
-
-    <!-- ================= MAIN ================= -->
 
     <div class="container">
 
-
-        <!-- WELCOME -->
-
+        <!-- Dashboard Header: No username or personal details -->
         <div class="welcome-card">
-
             <div>
+                {% if session["role"] == "admin" %}
+                <h1>📚 Admin Dashboard</h1>
+                <p>Manage books, users and library records.</p>
 
-                <h1>
-                    Welcome back, {{ session["username"] }} 👋
-                </h1>
+                {% elif session["role"] == "librarian" %}
+                <h1>📚 Librarian Dashboard</h1>
+                <p>Manage book issue, return and student records.</p>
 
-                <p>
-
-                    {% if session["role"] == "admin" %}
-
-                    Manage your library efficiently from one dashboard.
-
-                    {% else %}
-
-                    Browse, issue and manage your books easily.
-
-                    {% endif %}
-
-                </p>
-
+                {% else %}
+                <h1>📚 Student Dashboard</h1>
+                <p>Browse books and check your own book records.</p>
+                {% endif %}
             </div>
-
 
             <div class="role-badge">
-
                 {{ session["role"]|capitalize }}
-
             </div>
-
         </div>
 
+        <!-- ADMIN DASHBOARD -->
+        {% if session["role"] == "admin" %}
 
-
-        <!-- ================= STATISTICS ================= -->
-
-        <h2 class="section-title">
-            📊 Library Overview
-        </h2>
-
+        <h2 class="section-title">📊 Library Overview</h2>
 
         <div class="dashboard-cards">
-
-
             <div class="stat-card">
-
-                <div class="stat-icon">
-                    📚
-                </div>
-
+                <div class="stat-icon">📚</div>
                 <p>Total Books</p>
-
-                <strong>
-                    {{ total_books }}
-                </strong>
-
+                <strong>{{ total_books }}</strong>
             </div>
 
-
-
             <div class="stat-card">
-
-                <div class="stat-icon">
-                    ✅
-                </div>
-
+                <div class="stat-icon">✅</div>
                 <p>Available Books</p>
-
-                <strong>
-                    {{ available_books }}
-                </strong>
-
+                <strong>{{ available_books }}</strong>
             </div>
 
-
-
             <div class="stat-card">
-
-                <div class="stat-icon">
-                    📤
-                </div>
-
+                <div class="stat-icon">📤</div>
                 <p>Issued Books</p>
-
-                <strong>
-                    {{ issued_books }}
-                </strong>
-
+                <strong>{{ issued_books }}</strong>
             </div>
 
-
-
             <div class="stat-card">
-
-                <div class="stat-icon">
-                    👥
-                </div>
-
+                <div class="stat-icon">👥</div>
                 <p>Total Users</p>
-
-                <strong>
-                    {{ total_users }}
-                </strong>
-
+                <strong>{{ total_users }}</strong>
             </div>
-
-
 
             <div class="stat-card">
-
-                <div class="stat-icon">
-                    ⚠️
-                </div>
-
+                <div class="stat-icon">⚠️</div>
                 <p>Overdue Books</p>
-
-                <strong>
-                    {{ overdue_books }}
-                </strong>
-
+                <strong>{{ overdue_books }}</strong>
             </div>
-
         </div>
 
-
-
-        <!-- ================= QUICK ACTIONS ================= -->
-
-        <h2 class="section-title">
-            ⚡ Quick Actions
-        </h2>
-
+        <h2 class="section-title">⚙️ Admin Actions</h2>
 
         <div class="quick-actions">
-
-
             <a href="/books" class="action-card">
-
                 <span>📖</span>
-
                 <div>
-
-                    <strong>
-                        Browse Books
-                    </strong>
-
-                    <small>
-                        Search and view library books
-                    </small>
-
+                    <strong>Manage Books</strong>
+                    <small>View and manage library books</small>
                 </div>
-
             </a>
-
-
-
-            {% if session["role"] == "student" %}
-
-            <a href="/my-books" class="action-card">
-
-                <span>📋</span>
-
-                <div>
-
-                    <strong>
-                        My Books
-                    </strong>
-
-                    <small>
-                        View your issued books
-                    </small>
-
-                </div>
-
-            </a>
-
-            {% endif %}
-
-
-
-            {% if session["role"] == "admin" %}
 
             <a href="/add" class="action-card">
-
                 <span>➕</span>
-
                 <div>
-
-                    <strong>
-                        Add Book
-                    </strong>
-
-                    <small>
-                        Add a new book
-                    </small>
-
+                    <strong>Add Book</strong>
+                    <small>Add a new book</small>
                 </div>
-
             </a>
-
-
 
             <a href="/users" class="action-card">
-
                 <span>👥</span>
-
                 <div>
-
-                    <strong>
-                        Manage Users
-                    </strong>
-
-                    <small>
-                        View registered users
-                    </small>
-
+                    <strong>Manage Users</strong>
+                    <small>View registered users</small>
                 </div>
-
             </a>
-
-
 
             <a href="/history" class="action-card">
-
                 <span>📋</span>
-
                 <div>
-
-                    <strong>
-                        Transaction History
-                    </strong>
-
-                    <small>
-                        View issue and return records
-                    </small>
-
+                    <strong>History</strong>
+                    <small>View issue and return records</small>
                 </div>
-
             </a>
-
-
 
             <a href="/reports" class="action-card">
-
                 <span>📊</span>
-
                 <div>
-
-                    <strong>
-                        Reports
-                    </strong>
-
-                    <small>
-                        View library statistics
-                    </small>
-
+                    <strong>Reports</strong>
+                    <small>View library reports</small>
                 </div>
+            </a>
+        </div>
 
+        <h2 class="section-title">🕐 Recent Transactions</h2>
+
+        <div class="card" style="overflow-x:auto;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Student</th>
+                        <th>Book</th>
+                        <th>Issue Date</th>
+                        <th>Return Date</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for record in recent_transactions %}
+                    <tr>
+                        <td>{{ record.name }}</td>
+                        <td>{{ record.title }}</td>
+                        <td>{{ record.issue_date }}</td>
+                        <td>{{ record.return_date or "—" }}</td>
+                        <td>{{ record.status }}</td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="5">No transactions available.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- LIBRARIAN DASHBOARD -->
+        {% elif session["role"] == "librarian" %}
+
+        <h2 class="section-title">📊 Library Overview</h2>
+
+        <div class="dashboard-cards">
+            <div class="stat-card">
+                <div class="stat-icon">📚</div>
+                <p>Total Books</p>
+                <strong>{{ total_books }}</strong>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">✅</div>
+                <p>Available Books</p>
+                <strong>{{ available_books }}</strong>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">📤</div>
+                <p>Issued Books</p>
+                <strong>{{ issued_books }}</strong>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">⚠️</div>
+                <p>Overdue Books</p>
+                <strong>{{ overdue_books }}</strong>
+            </div>
+        </div>
+
+        <h2 class="section-title">📚 Librarian Activities</h2>
+
+        <div class="quick-actions">
+            <a href="/books" class="action-card">
+                <span>📖</span>
+                <div>
+                    <strong>Manage Books</strong>
+                    <small>View books and issue books to students</small>
+                </div>
             </a>
 
-            {% endif %}
+            <a href="/history" class="action-card">
+                <span>📋</span>
+                <div>
+                    <strong>Issue/Return History</strong>
+                    <small>View student and transaction records</small>
+                </div>
+            </a>
 
+            <a href="/overdue" class="action-card">
+                <span>⚠️</span>
+                <div>
+                    <strong>Overdue Books</strong>
+                    <small>Check overdue books and fines</small>
+                </div>
+            </a>
         </div>
 
+        <h2 class="section-title">🕐 Recent Transactions</h2>
 
-
-        <!-- ================= RECENT TRANSACTIONS ================= -->
-
-        <h2 class="section-title">
-            🕐 Recent Transactions
-        </h2>
-
-
-        <div class="card">
-
-            <div style="overflow-x:auto;">
-
-                <table>
-
+        <div class="card" style="overflow-x:auto;">
+            <table>
+                <thead>
                     <tr>
-
                         <th>Student</th>
-
                         <th>Book</th>
-
                         <th>Issue Date</th>
-
                         <th>Return Date</th>
-
                         <th>Status</th>
-
                     </tr>
+                </thead>
 
-
+                <tbody>
                     {% for record in recent_transactions %}
-
                     <tr>
-
-                        <td>
-                            {{ record.name }}
-                        </td>
-
-                        <td>
-                            {{ record.title }}
-                        </td>
-
-                        <td>
-                            {{ record.issue_date }}
-                        </td>
-
-                        <td>
-
-                            {% if record.return_date %}
-
-                            {{ record.return_date }}
-
-                            {% else %}
-
-                            —
-
-                            {% endif %}
-
-                        </td>
-
-                        <td>
-
-                            {% if record.status == "Issued" %}
-
-                            <strong style="color:#d97706;">
-                                📤 Issued
-                            </strong>
-
-                            {% else %}
-
-                            <strong style="color:#16a34a;">
-                                📥 Returned
-                            </strong>
-
-                            {% endif %}
-
-                        </td>
-
+                        <td>{{ record.name }}</td>
+                        <td>{{ record.title }}</td>
+                        <td>{{ record.issue_date }}</td>
+                        <td>{{ record.return_date or "—" }}</td>
+                        <td>{{ record.status }}</td>
                     </tr>
-
-
                     {% else %}
-
                     <tr>
-
-                        <td colspan="5">
-
-                            📋 No transactions available.
-
-                        </td>
-
+                        <td colspan="5">No transactions available.</td>
                     </tr>
-
                     {% endfor %}
-
-                </table>
-
-            </div>
-
+                </tbody>
+            </table>
         </div>
 
+        <!-- STUDENT DASHBOARD -->
+        {% elif session["role"] == "student" %}
 
+        <h2 class="section-title">📚 Student Options</h2>
 
-        <!-- ================= RECENT BOOKS ================= -->
+        <div class="quick-actions">
+            <a href="/books" class="action-card">
+                <span>📖</span>
+                <div>
+                    <strong>Browse Books</strong>
+                    <small>Search and view library books</small>
+                </div>
+            </a>
 
-        <h2 class="section-title">
-            📚 Recently Added Books
-        </h2>
+            <a href="/my-books" class="action-card">
+                <span>📋</span>
+                <div>
+                    <strong>My Books</strong>
+                    <small>View your issue and return history</small>
+                </div>
+            </a>
 
-
-        <div class="card">
-
-            <div style="overflow-x:auto;">
-
-                <table>
-
-                    <tr>
-
-                        <th>Book</th>
-
-                        <th>Author</th>
-
-                        <th>Category</th>
-
-                        <th>Quantity</th>
-
-                        <th>Available</th>
-
-                    </tr>
-
-
-                    {% for book in recent_books %}
-
-                    <tr>
-
-                        <td>
-                            <strong>
-                                {{ book.title }}
-                            </strong>
-                        </td>
-
-                        <td>
-                            {{ book.author }}
-                        </td>
-
-                        <td>
-                            {{ book.category }}
-                        </td>
-
-                        <td>
-                            {{ book.quantity }}
-                        </td>
-
-                        <td>
-
-                            {% if book.available > 0 %}
-
-                            <strong style="color:#16a34a;">
-                                {{ book.available }}
-                            </strong>
-
-                            {% else %}
-
-                            <strong style="color:#dc2626;">
-                                0
-                            </strong>
-
-                            {% endif %}
-
-                        </td>
-
-                    </tr>
-
-
-                    {% else %}
-
-                    <tr>
-
-                        <td colspan="5">
-
-                            📚 No books available.
-
-                        </td>
-
-                    </tr>
-
-                    {% endfor %}
-
-                </table>
-
-            </div>
-
+            <a href="/overdue" class="action-card">
+                <span>⚠️</span>
+                <div>
+                    <strong>My Overdue Books</strong>
+                    <small>Check your overdue books</small>
+                </div>
+            </a>
         </div>
 
+        {% endif %}
 
     </div>
 
-
-
-    <!-- ================= FOOTER ================= -->
-
     <footer>
-
-        <p>
-            © 2026 Library Management System
-        </p>
-
+        <p>© 2026 Library Management System</p>
     </footer>
 
-
 </body>
-
 </html>

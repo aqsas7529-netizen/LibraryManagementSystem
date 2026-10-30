@@ -1,0 +1,90 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Overdue Books | Library Management System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="nav-brand">📚 Library Management System</div>
+    <div class="nav-links">
+        <a href="/">Dashboard</a>
+        <a href="/books">Books</a>
+        <a href="/history">History</a>
+        <a href="/logout">Logout</a>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="welcome-card">
+        <div>
+            <h1>⚠️ Overdue Books</h1>
+            <p>Books that have not been returned by their due date.</p>
+        </div>
+        <div class="role-badge">
+            {{ session.get('role', 'User')|title }}
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>📚 Overdue Records</h2>
+        <div style="overflow-x:auto;">
+            <table>
+                <tr>
+                    <th>Student</th>
+                    <th>Username</th>
+                    <th>Book</th>
+                    <th>Issue Date</th>
+                    <th>Due Date</th>
+                    <th>Days Overdue</th>
+                    <th>Fine</th>
+                    <th>Action</th>
+                </tr>
+
+                {% for book in overdue_books %}
+                <tr>
+                    <td>{{ book.name }}</td>
+                    <td>{{ book.username }}</td>
+                    <td>{{ book.title }}</td>
+                    <td>{{ book.issue_date }}</td>
+                    <td>{{ book.due_date }}</td>
+                    <td>{{ book.days_overdue }}</td>
+                    <td>₹{{ book.fine }}</td>
+                    <td>
+                        {% if session.get('role') == 'librarian' %}
+                        <form method="POST"
+                              action="{{ url_for('return_book', id=book.id) }}"
+                              onsubmit="return confirm('Confirm book return?');">
+                            <button type="submit">📥 Return Book</button>
+                        </form>
+                        {% else %}
+                        Librarian handles returns
+                        {% endif %}
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="8">✅ No overdue books found.</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+
+    <div class="card">
+        <a href="/books">📖 Back to Books</a>
+        |
+        <a href="/history">📋 Transaction History</a>
+    </div>
+</div>
+
+<footer>
+    <p>© 2026 Library Management System</p>
+</footer>
+
+</body>
+</html>

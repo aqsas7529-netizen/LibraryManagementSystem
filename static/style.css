@@ -544,3 +544,16 @@ footer {
         align-self: flex-start;
     }
 }
+/* LOGIN PAGE CENTER ALIGNMENT */
+body:has(.login-page) {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-page {
+    width: 100%;
+    max-width: 450px;
+    margin: auto;
+}
