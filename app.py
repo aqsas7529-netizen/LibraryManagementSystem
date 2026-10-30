@@ -8,12 +8,17 @@ from datetime import date, timedelta
 app = Flask(__name__)
 app.secret_key = "library_management_secret"
 
-DATABASE = os.path.join(
-    os.path.dirname(os.path.abspath(__file__)),
-    "library_recovered.db"
-)
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+DATABASE = os.path.join(BASE_DIR, "library_recovered.db")
+
 FINE_PER_DAY = 10
 ISSUE_DAYS = 7
+
+print("================================")
+print("LIBRARY DATABASE PATH:", DATABASE)
+print("DATABASE EXISTS:", os.path.exists(DATABASE))
+print("================================")
 
 
 # ==================================================
@@ -112,6 +117,24 @@ def create_tables():
     conn.close()
 
 create_tables()
+
+# Verify recovered database records
+conn = get_db()
+
+print("TOTAL USERS:",
+      conn.execute("SELECT COUNT(*) FROM users").fetchone()[0])
+
+print("TOTAL BOOKS:",
+      conn.execute("SELECT COUNT(*) FROM books").fetchone()[0])
+
+print("TOTAL HISTORY RECORDS:",
+      conn.execute("SELECT COUNT(*) FROM issue_records").fetchone()[0])
+
+conn.close()
+
+# ==================================================
+# AUTHENTICATION
+# ==================================================
 # ==================================================
 # AUTHENTICATION
 # ==================================================
@@ -148,7 +171,7 @@ def admin_required(function):
     return roles_required("admin")(function)
 
 
-def librarian_required(function):
+def librarian_required(function):   
     return roles_required("librarian")(function)
 
 
@@ -871,9 +894,6 @@ def history():
     """).fetchall()
 
     conn.close()
-   
-    return render_template("history.html", history=records)
-
 
     return render_template("history.html", history=records)
 
