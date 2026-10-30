@@ -111,7 +111,7 @@ def create_tables():
     conn.commit()
     conn.close()
 
-    create_tables()
+ create_tables()
 # ==================================================
 # AUTHENTICATION
 # ==================================================
