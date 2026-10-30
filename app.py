@@ -10,7 +10,7 @@ app.secret_key = "library_management_secret"
 
 DATABASE = os.path.join(
     os.path.dirname(os.path.abspath(__file__)),
-    "library.db"
+    "library_recovered.db"
 )
 FINE_PER_DAY = 10
 ISSUE_DAYS = 7
