@@ -2,3 +2,5 @@
 library.db
 __pycache__/
 *.pyc
+library_backup_*.db
+library_recovered.db
