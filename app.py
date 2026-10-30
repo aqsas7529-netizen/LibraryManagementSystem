@@ -1,3 +1,4 @@
+import os
 
 from flask import Flask, render_template, request, redirect, session
 import sqlite3
@@ -7,7 +8,10 @@ from datetime import date, timedelta
 app = Flask(__name__)
 app.secret_key = "library_management_secret"
 
-DATABASE = "library.db"
+DATABASE = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)),
+    "library.db"
+)
 FINE_PER_DAY = 10
 ISSUE_DAYS = 7
 
@@ -107,7 +111,7 @@ def create_tables():
     conn.commit()
     conn.close()
 
-
+    create_tables()
 # ==================================================
 # AUTHENTICATION
 # ==================================================
@@ -867,7 +871,7 @@ def history():
     """).fetchall()
 
     conn.close()
-
+   
     return render_template("history.html", history=records)
 
 
@@ -879,5 +883,4 @@ def history():
 # ==================================================
 
 if __name__ == "__main__":
-    create_tables()
     app.run(debug=True)
